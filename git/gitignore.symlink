@@ -1,0 +1,8 @@
+Session.vim
+.ropeproject
+.ropeproject/
+*/.ropeproject/*
+/.ropeproject/*
+*.swp
+*/.ropeproject
+__pycache__

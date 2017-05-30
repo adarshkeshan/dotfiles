@@ -1,0 +1,19 @@
+[user]
+	name = Adarsh Keshan
+	email = akeshan@hearsaycorp.com
+[push]
+	default = simple
+[alias]
+	squash = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+    up-mast = "!git fetch upstream && git checkout upstream/master"
+    newb = "!git up-mast && git cpb"
+    stash-cb = "!CURRENTBRANCH=$(git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3)"
+    catchup = "!_(){ CURRENTBRANCH=$(git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3); git fetch origin; echo \"Currently on \"$CURRENTBRANCH\" - switching to \"$@; git checkout $@; git merge origin/$@; echo \"Going back to \"$CURRENTBRANCH; git checkout $CURRENTBRANCH; }; _"
+    cleanup = "!git stash-cb && git checkout master && git pull upstream master && git push && git branch --merged | grep -v "\\*" | xargs -n 1 git branch -d && git checkout $CURRENTBRANCH && git remote prune origin"
+    g = "grep -n"
+    cpb = "!git checkout -b $1 && git push --set-upstream origin"
+    wip = "commit -an -m WIP"
+    cp = "!git add . && !git commit --amend --no-edit && git push origin HEAD --force"
+[core]
+	editor = vi
+	excludesfile = /home/akeshan/.gitignore

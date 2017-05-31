@@ -3,7 +3,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
 export EDITOR=vi
-#export TERM=xterm
+export TERM=xterm-256color
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/akeshan/.oh-my-zsh

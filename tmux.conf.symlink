@@ -39,11 +39,10 @@ bind -r J resize-pane -D 5
 bind -r K resize-pane -U 5
 bind -r L resize-pane -R 5
 # mouse support - set to on if you want to use the mouse
-set -g mouse off
+set -g mouse on
 
 # Set the default terminal mode to 256color mode
 set -g default-terminal "screen-256color"
-
 
 # set the status line's colors
 set -g status-style fg=white,bg=black
@@ -56,11 +55,11 @@ setw -g window-status-current-style fg=white,bold,bg=red
 
 # colors for pane borders
 setw -g pane-border-style fg=green,bg=black
-setw -g pane-active-border-style fg=white,bg=yellow
+setw -g pane-active-border-style fg=white,bg=black
 
 # active pane normal, other shaded out
-setw -g window-style fg=colour240,bg=colour235
-setw -g window-active-style fg=white,bg=black
+setw -g window-style fg=colour248,bg=colour235
+setw -g window-active-style fg=white,bg=colour236
 
 # Command / message line
 set -g message-style fg=white,bold,bg=black
@@ -85,7 +84,6 @@ set -g visual-activity on
 # enable vi keys.
 setw -g mode-keys vi
 
-set -g default-terminal "screen-256color"
 
 # Smart pane switching with awareness of Vim splits.
 # See: https://github.com/christoomey/vim-tmux-navigator

@@ -1,0 +1,8 @@
+[github_repo_lgtm_script]
+username = adarshkeshan
+oauth_token = 48718e200fb5df761b950aea441ac0ed1660cc95
+
+[options]
+use_all_commits = yes
+skip_release_note = yes
+auto_push = yes

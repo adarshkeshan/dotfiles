@@ -53,6 +53,17 @@ let g:vim_isort_map = '<C-t>'
 let g:tmux_navigator_disable_when_zoomed = 1
 nmap <F8> :TagbarToggle<CR>
 nnoremap <c-p> :Files<CR>
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 " }}}
 " Leader Shortcuts {{{
 let mapleader=" "
@@ -73,7 +84,6 @@ nnoremap <leader>a :Ag
 nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
 nnoremap <leader>1 :set number!<CR>
 nnoremap <leader>d :Make! 
-nnoremap <leader>r :TestFile<CR>
 vnoremap <leader>y "+y
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>G :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -87,6 +97,13 @@ nnoremap <leader>8 :Rg!<cword><CR>
 let g:syntastic_python_flake8_args='--ignore=E501'
 let g:syntastic_ignore_files = ['.java$']
 let g:syntastic_python_python_exec = 'python3'
+" }}}
+" Jedi {{{
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#rename_command = "<leader>r"
+let g:jedi#completions_enabled = 0
+let g:jedi#goto_assignments_command = ""
+let g:jedi#usages_command = "<leader>u"
 " }}}
 " AutoGroups {{{
 augroup configgroup
@@ -118,6 +135,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'scrooloose/syntastic'
 Plug 'fisadev/vim-isort'
 Plug 'majutsushi/tagbar'
+Plug 'davidhalter/jedi-vim'
 " utilities
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons' " file drawer
 Plug 'christoomey/vim-tmux-navigator'
@@ -137,7 +155,12 @@ Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'neomake/neomake' " neovim replacement for syntastic using neovim's job control functonality
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
-Plug 'garbas/vim-snipmate' " snippet manager
+" Track the engine.
+Plug 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
 Plug 'editorconfig/editorconfig-vim' " .editorconfig support
 Plug 'MarcWeber/vim-addon-mw-utils' " interpret a file by function and cache file automatically
 Plug 'tomtom/tlib_vim' " utility functions for vim

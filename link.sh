@@ -14,3 +14,6 @@ for file in $linkables ; do
         ln -s $file $target
     fi
 done
+
+mkdir ~/.config
+cp -r yapf ~/.config/

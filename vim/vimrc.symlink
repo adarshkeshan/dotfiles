@@ -77,6 +77,7 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>et :exec ":vsp /Users/dblack/notes/vim/" . strftime('%m-%d-%y') . ".md"<CR>
+nnoremap <leader>ey :exec ":vsp ~/.config/yapf/style"<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>l :call ToggleNumber()<CR>
@@ -86,7 +87,6 @@ nnoremap <leader>a :Ag
 nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
 nnoremap <leader>1 :set number!<CR>
 nnoremap <leader>d :Make! 
-vnoremap <leader>y "+y
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>G :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>b oimport ipdb; ipdb.set_trace()<Esc>

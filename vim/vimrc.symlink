@@ -1,9 +1,10 @@
-" Douglas Black
+" Adarsh Keshan 
 " Colors {{{
 syntax enable           " enable syntax processing
 set termguicolors
 " }}}
 " Misc {{{
+set laststatus=2
 set backspace=indent,eol,start
 let g:vimwiki_list = [{'path': '~/.wiki/'}]
 " }}}
@@ -53,6 +54,7 @@ let g:vim_isort_map = '<C-t>'
 let g:tmux_navigator_disable_when_zoomed = 1
 nmap <F8> :TagbarToggle<CR>
 nnoremap <c-p> :Files<CR>
+" nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -91,6 +93,8 @@ nnoremap <leader>b oimport ipdb; ipdb.set_trace()<Esc>
 nnoremap <leader>B oimport pdb; pdb.set_trace()<Esc>
 nnoremap <leader>y :0,$!yapf<Cr><C-o>
 nnoremap <leader>8 :Rg!<cword><CR>
+nnoremap <leader>9 <Plug>PyImportCleanup
+map <Leader>j !python -m json.tool<CR>
 " }}}
 
 " Syntastic {{{
@@ -139,7 +143,6 @@ Plug 'davidhalter/jedi-vim'
 " utilities
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons' " file drawer
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'tmhedberg/simpylfold'
 Plug 'valloric/youcompleteme'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -147,12 +150,10 @@ Plug 'mileszs/ack.vim' " search inside files using ack. Same as command line ack
 Plug 'Raimondi/delimitMate' " automatic closing of quotes, parenthesis, brackets, etc.
 Plug 'tpope/vim-commentary' " comment stuff out
 Plug 'tpope/vim-unimpaired' " mappings which are simply short normal mode aliases for commonly used ex commands
-Plug 'tpope/vim-endwise' " automatically add end in ruby
 Plug 'tpope/vim-ragtag' " endings for html, xml, etc. - ehances surround
 Plug 'tpope/vim-surround' " mappings to easily delete, change and add such surroundings in pairs, such as quotes, parens, etc.
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
-Plug 'neomake/neomake' " neovim replacement for syntastic using neovim's job control functonality
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
 " Track the engine.
@@ -160,6 +161,7 @@ Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
+Plug 'vim-scripts/python_import.vim'
 
 Plug 'editorconfig/editorconfig-vim' " .editorconfig support
 Plug 'MarcWeber/vim-addon-mw-utils' " interpret a file by function and cache file automatically
@@ -167,7 +169,6 @@ Plug 'tomtom/tlib_vim' " utility functions for vim
 Plug 'sotte/presenting.vim', { 'for': 'markdown' } " a simple tool for presenting slides in vim based on text files
 Plug 'ervandew/supertab' " Perform all your vim insert mode completions with Tab
 Plug 'tpope/vim-dispatch' " asynchronous build and test dispatcher
-Plug 'tpope/vim-vinegar' " netrw helper
 Plug 'AndrewRadev/splitjoin.vim' " single/multi line code handler: gS - split one line into multiple, gJ - combine multiple lines into one
 Plug 'vim-scripts/matchit.zip' " extended % matching
 Plug 'tpope/vim-sleuth' " detect indent style (tabs vs. spaces)
@@ -196,11 +197,7 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' } " markdown support
 " language-specific plugins
 Plug 'elzr/vim-json', { 'for': 'json' } " JSON support
 Plug 'Shougo/vimproc.vim', { 'do': 'make' } " interactive command execution in vim
-Plug 'fatih/vim-go', { 'for': 'go' } " go support
 Plug 'timcharper/textile.vim', { 'for': 'textile' } " textile support
-
-call plug#end()
-
 
 call plug#end()
 " }}}
@@ -211,9 +208,9 @@ let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_theme='onedark'
 let g:airline#extensions#tabline#enabled = 1 " enable airline tabline
-let g:airline#extensions#tabline#tab_min_count = 2 " only show tabline if tabs are being used (more than 1 tab open)
-let g:airline#extensions#tabline#show_buffers = 0 " do not show open buffers in tabline
-let g:airline#extensions#tabline#show_splits = 0
+" let g:airline#extensions#tabline#show_buffers = 0 " do not show open buffers in tabline
+" let g:airline#extensions#tabline#show_splits = 0
+let g:airline_powerline_fonts = 1
 " }}}
 
 " FZF {{{

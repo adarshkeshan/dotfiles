@@ -58,8 +58,8 @@ setw -g pane-border-style fg=green,bg=black
 setw -g pane-active-border-style fg=white,bg=black
 
 # active pane normal, other shaded out
-setw -g window-style fg=colour248,bg=colour235
-setw -g window-active-style fg=white,bg=colour236
+setw -g window-style fg=colour246,bg=colour235
+setw -g window-active-style fg=colour254,bg=colour235
 
 # Command / message line
 set -g message-style fg=white,bold,bg=black

@@ -1,7 +1,7 @@
 " Adarsh Keshan 
 " Colors {{{
 syntax enable           " enable syntax processing
-set termguicolors
+" set termguicolors
 " }}}
 " Misc {{{
 set laststatus=2
@@ -95,7 +95,13 @@ nnoremap <leader>B oimport pdb; pdb.set_trace()<Esc>
 nnoremap <leader>y :0,$!yapf<Cr><C-o>
 nnoremap <leader>8 :Rg!<cword><CR>
 nnoremap <leader>9 <Plug>PyImportCleanup
-map <Leader>j !python -m json.tool<CR>
+nnoremap <Leader>j !python -m json.tool<CR>
+nnoremap <silent> <leader>tn :TestNearest<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+nnoremap <leader>zz :call TestThis()<CR>
 " }}}
 
 " Syntastic {{{
@@ -124,6 +130,10 @@ augroup configgroup
     autocmd BufEnter *.py setlocal tabstop=4
     autocmd BufEnter *.md setlocal ft=markdown
 augroup END
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }"
 " }}}
 " Backups {{{
 set backup
@@ -164,6 +174,9 @@ Plug 'Chiel92/vim-autoformat'
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 Plug 'vim-scripts/python_import.vim'
+
+Plug 'janko-m/vim-test'
+Plug 'benmills/vimux'
 
 Plug 'editorconfig/editorconfig-vim' " .editorconfig support
 Plug 'MarcWeber/vim-addon-mw-utils' " interpret a file by function and cache file automatically
@@ -213,6 +226,45 @@ let g:airline#extensions#tabline#enabled = 1 " enable airline tabline
 " let g:airline#extensions#tabline#show_buffers = 0 " do not show open buffers in tabline
 " let g:airline#extensions#tabline#show_splits = 0
 let g:airline_powerline_fonts = 1
+" }}}
+
+" Testing {{{
+" Vim test Options
+
+" strips trailing whitespace at the end of files. this
+" is called on buffer write in the autogroup above.
+function! GetCurrentTestExecution()
+    " Preparation: save last search, and cursor position.
+    let current_path = getcwd()
+    if current_path =~ "projects/hearsay-contacts"
+        return ".virtualenv/bin/python ./manage.py test --settings=contacts.settings.test"
+      elseif current_path =~ "projects/hearsay-salesforce-service"
+        return ".virtualenv/bin/python ./manage.py test --settings=salesforce_service.settings.test"
+      else
+        return ".virtualenv/bin/python ./manage.py test"
+    endif
+endfunction
+function! DjangoCommandTransform(cmd) abort
+    let current_path = getcwd()
+    if current_path =~ "projects/HearsayLabs"
+        let current_command = a:cmd
+        let splits = split(current_command)
+        let test_file =  " fanmgmt.".splits[-1] 
+
+        return join(splits[0:-2]).test_file
+    else
+        return a:cmd
+endfunction
+
+let g:test#custom_transformations = {'djangotest': function('DjangoCommandTransform')}
+let g:test#transformation = 'djangotest'
+
+let test#python#djangotest#executable = GetCurrentTestExecution()
+let test#python#runner = 'djangotest'
+" make test commands execute using dispatch.vim
+let test#strategy = "vimux"
+let g:test#preserve_screen = 1
+
 " }}}
 
 " FZF {{{
@@ -272,8 +324,7 @@ function! ToggleNumber()
     endif
 endfunc
 
-" strips trailing whitespace at the end of files. this
-" is called on buffer write in the autogroup above.
+
 function! <SID>StripTrailingWhitespaces()
     " save last search & cursor position
     let _s=@/

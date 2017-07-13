@@ -3,3 +3,9 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 
 vim +PlugInstall
+
+sudo pip install yapf
+sudo pip install isort
+gem install coderay
+sudo apt-get install pylint
+

@@ -108,6 +108,9 @@ nnoremap <leader>zz :call TestThis()<CR>
 let g:syntastic_python_flake8_args='--ignore=E501'
 let g:syntastic_ignore_files = ['.java$']
 let g:syntastic_python_python_exec = 'python3'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 " }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
@@ -254,6 +257,12 @@ function! DjangoCommandTransform(cmd) abort
         return join(splits[0:-2]).test_file
     else
         return a:cmd
+endfunction
+
+function! TestThis()
+    " Preparation: save last search, and cursor position.
+    let current_path = getcwd()
+    let test = execute "!awk '/PROJECT_NAME =/ { projectName = $3 } END { print projectName }' Makefile"
 endfunction
 
 let g:test#custom_transformations = {'djangotest': function('DjangoCommandTransform')}

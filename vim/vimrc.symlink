@@ -111,6 +111,8 @@ let g:syntastic_python_python_exec = 'python3'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_full_redraws=0
+let g:syntastic_check_on_wq=0
 " }}}
 " Jedi {{{
 let g:jedi#auto_vim_configuration = 0
@@ -238,14 +240,8 @@ let g:airline_powerline_fonts = 1
 " is called on buffer write in the autogroup above.
 function! GetCurrentTestExecution()
     " Preparation: save last search, and cursor position.
-    let current_path = getcwd()
-    if current_path =~ "projects/hearsay-contacts"
-        return ".virtualenv/bin/python ./manage.py test --settings=contacts.settings.test"
-      elseif current_path =~ "projects/hearsay-salesforce-service"
-        return ".virtualenv/bin/python ./manage.py test --settings=salesforce_service.settings.test"
-      else
-        return ".virtualenv/bin/python ./manage.py test"
-    endif
+    let projectName = GetCurrentProjectName()
+    return ".virtualenv/bin/python ./manage.py test --settings=".projectName.".settings.test"
 endfunction
 function! DjangoCommandTransform(cmd) abort
     let current_path = getcwd()
@@ -254,15 +250,14 @@ function! DjangoCommandTransform(cmd) abort
         let splits = split(current_command)
         let test_file =  " fanmgmt.".splits[-1] 
 
-        return join(splits[0:-2]).test_file
+        return ".virtualenv/bin/python ./manage.py test ".test_file
     else
         return a:cmd
 endfunction
 
-function! TestThis()
-    " Preparation: save last search, and cursor position.
-    let current_path = getcwd()
-    let test = execute "!awk '/PROJECT_NAME =/ { projectName = $3 } END { print projectName }' Makefile"
+function! GetCurrentProjectName()
+    let projectName = system("awk '/PROJECT_NAME =/ { projectName = $3 } END { print projectName }' Makefile")
+    return substitute(projectName, '\n\+$', '', '')
 endfunction
 
 let g:test#custom_transformations = {'djangotest': function('DjangoCommandTransform')}

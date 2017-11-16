@@ -17,3 +17,4 @@ done
 
 mkdir ~/.config
 cp -r yapf ~/.config/
+cp -r ./tmux/daily.yml ~/.config/tmuxinator/

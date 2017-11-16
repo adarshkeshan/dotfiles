@@ -25,6 +25,7 @@ alias mkdir='mkdir -pv'
 
 #Tmux
 alias ta='tmux attach'
+alias t='tmux attach'
 alias ttor='tmuxinator'
 alias takeover='tmux detach -a'
 

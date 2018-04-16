@@ -9,6 +9,10 @@ set backspace=indent,eol,start
 let g:vimwiki_list = [{'path': '~/.wiki/'}]
 set spelllang=en_us
 " }}}
+" Copy {{{
+vmap "+y :!xclip -f -sel clip
+map "+p :r!xclip -o -sel clip
+" }}}
 " Spaces & Tabs {{{
 set tabstop=4           " 4 space tab
 set expandtab           " use spaces for tabs
@@ -109,9 +113,17 @@ nnoremap <silent> <leader>tk :!tmux detach -a<CR><CR>
 nnoremap <leader>zz :call TestThis()<CR>
 " }}}
 
+" Visual {{{
+vnoremap . :normal .<CR>
+" }}}
 " Syntastic {{{
-let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8']
+let g:syntastic_python_pylint_post_args="--max-line-length=120"
+let g:pymode_lint_ignore = "E501,W"
+let g:syntastic_python_checkers = ['python', 'pyflakes', 'flake8']
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_python_checker_args='--ignore=E501'
+let g:syntastic_python_flake8_post_args='--ignore=E501,E128,E225'
+
 let local_eslint = finddir('node_modules', '.;') . '/.bin/eslint'
 if matchstr(local_eslint, "^\/\\w") == ''
     let local_eslint = getcwd() . "/" . local_eslint
@@ -119,9 +131,8 @@ endif
 if executable(local_eslint)
         let g:syntastic_javascript_eslint_exec = local_eslint
     endif
+let g:syntastic_python_pylint_post_args="--max-line-length=120"
 " let g:syntastic_python_python_exec = 'python3'
-" let g:syntastic_python_flake8_post_args='--ignore=E501,E128,E225'
-
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -203,6 +214,7 @@ Plug 'tpope/vim-surround' " mappings to easily delete, change and add such surro
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
+Plug 'tpope/vim-rhubarb' " amazing git wrapper for vim
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
 " Track the engine.
 Plug 'SirVer/ultisnips'
@@ -284,13 +296,13 @@ function! GetCurrentTestExecution()
 endfunction
 function! DjangoCommandTransform(cmd) abort
     let current_path = getcwd()
-    " if current_path =~ "projects/HearsayLabs"
-    "     let current_command = a:cmd
-    "     let splits = split(current_command)
-    "     let test_file =  " fanmgmt.".splits[-1] 
+    if current_path =~ "projects/HearsayLabs"
+        let current_command = a:cmd
+        let splits = split(current_command)
+        let test_file =  " fanmgmt.".splits[-1] 
 
-    "     return ".virtualenv/bin/python ./manage.py test ".test_file
-    " else
+        return ".virtualenv/bin/python ./manage.py test ".test_file
+    else
     return a:cmd
 endfunction
 

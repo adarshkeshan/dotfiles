@@ -66,8 +66,8 @@ fkill() {
 # fbr - checkout git branch
 fbr() {
   local branches branch
-  branches=$(git branch -vv) &&
-  branch=$(echo "$branches" | fzf +m) &&
+  branches=$(git branch -vv --sort=committerdate) &&
+  branch=$(echo "$branches" | fzf +m --no-sort --tac) &&
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
 

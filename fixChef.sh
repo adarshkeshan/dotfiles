@@ -7,5 +7,5 @@ sudo pip install isort
 gem install coderay
 sudo apt-get install pylint
 sudo apt-get install cmake
+gem install tmuxinator
 
-cp -r yapf ~/.config/

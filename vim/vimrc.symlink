@@ -100,7 +100,7 @@ nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>G :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>b oimport ipdb; ipdb.set_trace()<Esc>
 nnoremap <leader>B oimport pdb; pdb.set_trace()<Esc>
-nnoremap <leader>y :0,$!yapf<Cr><C-o>
+nnoremap <leader>Y :0,$!yapf<Cr><C-o>
 nnoremap <leader>8 :Rg!<cword><CR>
 nnoremap <leader>9 <Plug>PyImportCleanup
 nnoremap <Leader>j !python -m json.tool<CR>
@@ -110,7 +110,9 @@ nnoremap <silent> <leader>ta :TestSuite<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
 nnoremap <silent> <leader>tg :TestVisit<CR>
 nnoremap <silent> <leader>tk :!tmux detach -a<CR><CR>
-nnoremap <leader>zz :call TestThis()<CR>
+
+map <Leader>y <Plug>(operator-poweryank-osc52)
+map <leader>z  :GBYank<CR>
 " }}}
 
 " Visual {{{
@@ -244,14 +246,6 @@ Plug 'vim-scripts/matchit.zip' " extended % matching
 Plug 'tpope/vim-sleuth' " detect indent style (tabs vs. spaces)
 Plug 'sickill/vim-pasta' " context-aware pasting
 
-" JavaScript
-Plug 'gavocanov/vim-js-indent', { 'for': 'javascript' } " JavaScript indent support
-Plug 'moll/vim-node', { 'for': 'javascript' } " node support
-Plug 'othree/yajs.vim', { 'for': 'javascript' } " JavaScript syntax plugin
-Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' } " ES6 and beyond syntax
-Plug 'mxw/vim-jsx', { 'for': ['jsx', 'javascript'] } " JSX support
-Plug 'ternjs/tern_for_vim', { 'for': ['jsx', 'javascript'] } 
-
 " styles
 Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] } " markdown support
 Plug 'groenewege/vim-less', { 'for': 'less' } " less support
@@ -270,6 +264,7 @@ Plug 'elzr/vim-json', { 'for': 'json' } " JSON support
 Plug 'Shougo/vimproc.vim', { 'do': 'make' } " interactive command execution in vim
 Plug 'timcharper/textile.vim', { 'for': 'textile' } " textile support
 
+Plug 'haya14busa/vim-poweryank'
 call plug#end()
 " }}}
 " airline {{{
@@ -322,6 +317,11 @@ let g:test#preserve_screen = 1
 
 " }}}
 
+
+" Fugitive{{{
+" Fugitive's Gbrowse to clipboard (using poweryank)
+command! -range GBYank exe "<line1>,<line2>Gbrowse!" | call poweryank#osc52(@*)
+" }}}
 " python{{{
 "
 "python with virtualenv support

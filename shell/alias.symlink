@@ -49,3 +49,6 @@ alias sz='source ~/.zshrc'
 
 #python
 alias removePycache='find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf'
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'

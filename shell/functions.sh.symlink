@@ -120,4 +120,10 @@ fs() {
   tmux switch-client -t "$session"
 }
 
+killPortTcp ()
+{
+    sudo lsof -t -i tcp:$1 | xargs kill
+}
+
+
 

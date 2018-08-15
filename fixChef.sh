@@ -4,8 +4,8 @@ sudo ./vim/vimInstall.sh
 sudo pip install yapf
 sudo pip install pep8
 sudo pip install isort
-gem install coderay
+sudo gem install coderay
 sudo apt-get install pylint
 sudo apt-get install cmake
-gem install tmuxinator
-
+sudo gem install tmuxinator
+sudo apt-get install silversearcher-ag

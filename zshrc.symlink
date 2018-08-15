@@ -132,4 +132,7 @@ setopt HIST_BEEP
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 #export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
+# source "/usr/bin/virtualenvwrapper.sh"
+# export WORKON_HOME="/opt/virtual_env/"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

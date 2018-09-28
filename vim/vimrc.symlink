@@ -12,6 +12,7 @@ set spelllang=en_us
 " Copy {{{
 vmap "+y :!xclip -f -sel clip
 map "+p :r!xclip -o -sel clip
+set clipboard=unnamed
 " }}}
 " Spaces & Tabs {{{
 set tabstop=4           " 4 space tab
@@ -207,12 +208,15 @@ call plug#begin('~/.vim/plugged')
 " colorschemes
 Plug 'joshdick/onedark.vim'
 Plug 'tmhedberg/SimpylFold'
+Plug 'tommcdo/vim-fubitive'
 
 Plug 'scrooloose/syntastic', { 'for': ['php', 'python', 'javascript', 'css'] }
 Plug 'fisadev/vim-isort'
 Plug 'majutsushi/tagbar'
 Plug 'davidhalter/jedi-vim'
 " utilities
+Plug 'kana/vim-fakeclip'
+
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons' " file drawer
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'valloric/youcompleteme'
@@ -317,17 +321,22 @@ function! GetCurrentProjectName()
     return substitute(projectName, '\n\+$', '', '')
 endfunction
 
-let g:test#custom_transformations = {'djangotest': function('DjangoCommandTransform')}
-let g:test#transformation = 'djangotest'
+" let g:test#custom_transformations = {'djangotest': function('DjangoCommandTransform')}
+" let g:test#transformation = 'djangotest'
 
-let test#python#djangotest#executable = GetCurrentTestExecution()
-let test#python#runner = 'djangotest'
+" let test#python#djangotest#executable = GetCurrentTestExecution()
+let test#python#runner = 'pytest'
+let test#python#pytest#options = '--capture=no'
 " make test commands execute using dispatch.vim
 let test#strategy = "vimux"
 let g:test#preserve_screen = 1
 
 " }}}
 
+" NERDTREE{{{
+let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__','venv']
+" }}}
+"
 
 " Fugitive{{{
 " Fugitive's Gbrowse to clipboard (using poweryank)

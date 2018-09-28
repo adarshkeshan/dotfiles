@@ -1,6 +1,6 @@
 [user]
 	name = Adarsh Keshan
-	email = akeshan@hearsaycorp.com
+	email = adarsh.keshan@oracle.com
 [push]
 	default = simple
 [alias]
@@ -19,5 +19,5 @@
     pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
 [core]
 	editor = vi
-	excludesfile = /home/akeshan/.gitignore
+	excludesfile = /Users/akeshan/.gitignore
 

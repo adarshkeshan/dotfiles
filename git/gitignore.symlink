@@ -6,3 +6,6 @@ Session.vim
 *.swp
 */.ropeproject
 __pycache__
+venv
+*/venv/*
+**/venv

@@ -17,6 +17,7 @@
     cp = "!git add . && !git commit --amend --no-edit && git push origin HEAD --force"
     pr-clean = "!git for-each-ref refs/heads/pr/* --format=\"%(refname)\" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
     pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+	create-pull-request = !sh -c 'stash pull-request $0 $@'
 [core]
 	editor = vi
 	excludesfile = /Users/akeshan/.gitignore

@@ -28,3 +28,31 @@ alias cts="cd $CONTACT_SERVICE_PATH"
 alias ctc="cd $CONTACT_CLIENT_PATH"
 
 export NO_FANMGMT_CLEAN=1
+
+
+
+# SOTU hosts
+SOTU_SEA_01='rba-sotu-api-01302.node.ad1.r1'
+SOTU_SEA_02='rba-sotu-api-02301.node.ad2.r1'
+
+SOTU_PHX_01='rba-sotu-api-01301.node.ad1.r2'
+SOTU_PHX_02='rba-sotu-api-02301.node.ad2.r2'
+
+SOTU_FRK_01='rba-sotu-api-01301.node.ad1.eu-frankfurt-1'
+SOTU_FRK_02='rba-sotu-api-02301.node.ad2.eu-frankfurt-1'
+
+SOTU_ASH_01='rba-sotu-api-01301.node.ad1.us-ashburn-1'
+SOTU_ASH_02='rba-sotu-api-02301.node.ad2.us-ashburn-1'
+
+SOTU_LON_01='rba-sotu-api-01301.node.ad1.uk-london-1'
+SOTU_LON_02='rba-sotu-api-02301.node.ad2.uk-london-1'
+
+#GOV
+
+
+SOTU_LUK_01='rba-sotu-api-01301.node.ad1.us-luke-1'
+SOTU_LUK_02='rba-sotu-api-01303.node.ad1.us-luke-1'
+
+SOTU_LAG_01='rba-sotu-api-01301.node.ad1.us-langley-1'
+SOTU_LAG_02='rba-sotu-api-01302.node.ad1.us-langley-1'
+

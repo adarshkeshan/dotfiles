@@ -89,6 +89,7 @@ set -g visual-activity on
 
 # enable vi keys.
 setw -g mode-keys vi
+bind-key C command-prompt -p "Name of new window: " "new-window -n '%%'"
 
 
 # bind C-c run "tmux save-buffer - | pbcopy-remote"

@@ -80,6 +80,93 @@ fcs() {
   echo -n $(echo "$commit" | sed "s/ .*//")
 }
 
+sqlnet_tunnel () {
+ 
+    local usage="usage: ${FUNCNAME} [-s <SSH_START_PORT>] <hostname|rrset>[:port]/<service_name>"
+ 
+    unset OPTIND
+    while getopts ":hs:" opt; do
+        case "${opt}" in
+            h)  echo "${usage}"; return 0;;
+            s)  local ssh_port="${OPTARG}";;
+            \?) echo "${usage}" >&2; return 1;;
+        esac
+    done
+    shift $((${OPTIND} - 1))
+ 
+    if [[ $# -lt 1 ]]; then echo ${usage}; return 1; fi
+ 
+    local conn_str="${1##*@}"
+    local conn_str="${conn_str##*//}"
+ 
+    local dns_name="${conn_str%%/*}"
+    local svc_name="${conn_str##*/}"
+ 
+    if [[ "${dns_name}" =~ ":" ]]; then
+        sql_port="${dns_name##*:}"
+        dns_name="${dns_name%%:*}"
+    fi
+ 
+    local ad=$(echo "${dns_name}" | awk -F. '{print $(NF-1)}')
+    local rg=$(echo "${dns_name}" | awk -F. '{print $(NF)}')
+ 
+    bastions=(
+        $(
+            for a in "${ad}" "svc" "ad1" "ad2" "ad3" "pop1" "pop2"; do
+                if [[ "${a}" = "svc" ]]; then
+                     echo "bastion.${rg}.oracleiaas.com"
+                else
+                     echo "bastion-${a}.${rg}.oracleiaas.com"
+                fi
+            done
+        )
+    )
+ 
+    local ssh_port="${ssh_port:-2000}"
+     for (( ssh_port; ssh_port<=$((ssh_port+500)); ssh_port+=3 )); do
+        lsof -i tcp:$ssh_port 1>/dev/null 2>/dev/null
+        if [[ $? -eq 0 ]]; then continue; fi;
+ 
+        lsof -i tcp:$((ssh_port+1)) 1>/dev/null 2>/dev/null
+        if [[ $? -eq 0 ]]; then continue; fi;
+ 
+        lsof -i tcp:$((ssh_port+2)) 1>/dev/null 2>/dev/null
+        if [[ $? -eq 0 ]]; then continue; fi;
+ 
+        break;
+    done
+    echo "#> Setting starting ssh port to $ssh_port"
+ 
+    local sql_port="${sql_port:-1521}"
+ 
+    for bastion in "${bastions[@]}"; do
+        echo "#> Trying to resolve RRSet ${dns_name} on ${bastion}"
+        ipaddrs="$(ssh -o StrictHostKeyChecking=no ${bastion} "getent hosts ${dns_name}" )" && {
+            ipaddrs=($(echo "${ipaddrs}" | awk '{print $1 }'))
+            echo "#> RRSet ${dns_name} resolved to: ${ipaddrs[*]}"
+            break;
+        }
+        echo "!> Failed to resolve RRSet ${dns_name} on ${bastion}"
+    done
+ 
+    if [[ -z "${ipaddrs}" ]]; then echo "!> Unable to resolve RRSet ${dns_name}"; return 1; fi
+ 
+    for ipaddr in ${ipaddrs[*]}; do
+        local sshaddrlist="${sshaddrlist} -L${ssh_port}:${ipaddr}:${sql_port}"
+        local sqladdrlist="${sqladdrlist}(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=${ssh_port}))"
+        (( ssh_port++ ))
+    done
+ 
+    echo "#> Use the following connection string after the tunnel is established:"
+    echo "-----------------------------------------------------------------------"
+    echo "jdbc:oracle:thin:@(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=20)(ADDRESS_LIST=(LOAD_BALANCE=OFF)(FAILOVER=ON)${sqladdrlist})(CONNECT_DATA=(SERVICE_NAME=${svc_name})))"
+    echo "-----------------------------------------------------------------------"
+ 
+    echo "#> Establishing ssh tunnel"
+    echo "#> ssh -o StrictHostKeyChecking=no ${sshaddrlist} ${bastion}"
+    ssh -o StrictHostKeyChecking=no ${sshaddrlist} ${bastion} 2>/dev/null
+}
+
 # fstash - easier way to deal with stashes
 # type fstash to get a list of your stashes
 # enter shows you the contents of the stash

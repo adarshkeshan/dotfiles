@@ -41,6 +41,8 @@ bind -r L resize-pane -R 5
 
 # window options
 set-window-option -g main-pane-height 60
+ 
+set-option -g history-limit 3000
 
 # mouse support - set to on if you want to use the mouse
 set -g mouse on

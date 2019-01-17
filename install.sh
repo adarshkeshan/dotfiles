@@ -4,10 +4,15 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 vim +PlugInstall
 
+brew install cmake
+brew install fzf
+brew install ripgrep
+brew install the_silver_searcher
 sudo pip install yapf
 sudo pip install pep8
 sudo pip install isort
 gem install coderay
+gem install tmuxinator
 sudo apt-get install pylint
 sudo apt-get install cmake
 apt-get install silversearcher-ag

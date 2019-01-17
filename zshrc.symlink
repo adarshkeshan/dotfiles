@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=~/instantclient_12_2:$PATH
+export PATH=~/playground/instantclient_12_2:$PATH
 
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
@@ -114,6 +114,7 @@ export LC_ALL="en_US.UTF-8"
 
 source ~/.alias
 source ~/.hearsay 
+source ~/.oracle.sh
 source ~/.functions.sh 
 
 # Remove dupliate history
@@ -125,6 +126,15 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_BEEP
+
+# get Maven setup
+# add Apache Maven to the path
+# if you are using maven 3.x, use these *instead of* the variables below
+# Note: maven 3.5.4 is recommended as latest=3.6.0 currently(Jan-2019) has 'findbugs' discrepancies observed
+export M3_HOME="/usr/local/Cellar/maven/3.6.0" # replace n.n.n with appropriate version
+export M3=$M3_HOME/bin
+export PATH=$M3:$PATH
+export PATH="/usr/local/opt/ruby/bin:$PATH"
 
 
 #: List files that would be searched but do not search

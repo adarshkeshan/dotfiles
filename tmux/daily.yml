@@ -43,37 +43,34 @@ root: ~/projects
 # post: tmux -CC attach -t daily
 
 windows:
-  - fan:
-      root: ~/projects/HearsayLabs/fanmgmt
+  - common:
+      root: ~/projects/sotu-common
       layout: main-horizontal
       panes:
         - vim
+        - source venv/bin/activate
         - clear
-        - make celery
-        - make dbshell
-        - fan_logs
 
-  - contacts:
-      root: ~/projects/hearsay-contacts
+  - restApi:
+      root: ~/projects/sotu-rest-api
       layout: main-horizontal
       panes:
         - vim
         - clear
         - make celery
-        - make dbshell
-        - logs
-  - contacts_client: 
-      root: ~/projects/hearsay-contacts_client
+
+  - Tandem: 
+      root: ~/projects/sotu-tanden-config
       layout: main-horizontal
       panes:
         - vim
         - clear
-  - salesforce:
-      root: ~/projects/hearsay-salesforce-service
+        - clear
+
+  - Auth Proxy:
+      root: ~/projects/sotu-auth-proxy
       layout: main-horizontal
       panes:
         - vim
         - clear
-        - make celery
-        - make dbshell
-        - logs
+        - clear

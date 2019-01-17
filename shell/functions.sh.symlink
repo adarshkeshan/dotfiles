@@ -2,6 +2,18 @@
 # functions
 ####################
 
+function stop_mcafee() {
+    sudo /usr/local/McAfee/AntiMalware/VSControl stop; sudo /usr/local/McAfee/AntiMalware/VSControl stopoas
+}
+
+function start_mcafee() {
+  sudo /usr/local/McAfee/AntiMalware/VSControl start; sudo /usr/local/McAfee/AntiMalware/VSControl startoas
+}
+
+# find shorthand
+function f() {
+    find . -name "$1"
+}
 # print available colors and their numbers
 function colours() {
     for i in {0..255}; do

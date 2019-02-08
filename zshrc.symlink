@@ -136,6 +136,9 @@ export M3=$M3_HOME/bin
 export PATH=$M3:$PATH
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 
+#Vi mode
+# bindkey -v
+
 
 #: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...

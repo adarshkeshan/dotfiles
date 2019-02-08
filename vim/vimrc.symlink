@@ -15,6 +15,20 @@ vmap "+y :!xclip -f -sel clip
 map "+p :r!xclip -o -sel clip
 set clipboard=unnamed
 " }}}
+" Delte not copy {{{
+" nnoremap x "_x
+" nnoremap X "_X
+" nnoremap d "_d
+" nnoremap D "_D
+nnoremap c "_c
+nnoremap C "_C
+" vnoremap d "_d
+" vnoremap x "_x
+" vnoremap d "_d
+
+"Sorting
+vnoremap S :sort<CR>
+" }}}
 " Spaces & Tabs {{{
 set tabstop=4           " 4 space tab
 set expandtab           " use spaces for tabs
@@ -99,7 +113,7 @@ nnoremap <silent> <leader>sp :set spell!<CR>
 nnoremap <leader>a :Ag 
 " nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
 nnoremap <leader>1 :set number!<CR>
-nnoremap <leader>d :diffthis<CR>
+" nnoremap <leader>d :diffthis<CR>
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>G :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>b oimport ipdb; ipdb.set_trace()<Esc>
@@ -107,7 +121,7 @@ nnoremap <leader>B oimport pdb; pdb.set_trace()<Esc>
 nnoremap <leader>Y :0,$!yapf<Cr><C-o>
 nnoremap <leader>8 :Rg!<cword><CR>
 nnoremap <leader>9 <Plug>PyImportCleanup
-nnoremap <Leader>j !python -m json.tool<CR>
+nnoremap <Leader>JJ :%!python -m json.tool<CR>
 nnoremap <silent> <leader>tn :TestNearest<CR>
 nnoremap <silent> <leader>tf :TestFile<CR>
 nnoremap <silent> <leader>ta :TestSuite<CR>
@@ -123,6 +137,7 @@ map <Leader>vz :VimuxZoomRunner<CR>
 
 map <Leader>y <Plug>(operator-poweryank-osc52)
 map <leader>z  :GBYank<CR>
+
 
 
 " copy the current text selection to the system clipboard

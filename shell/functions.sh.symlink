@@ -7,9 +7,15 @@ function stop_mcafee() {
 }
 
 function start_mcafee() {
-  sudo /usr/local/McAfee/AntiMalware/VSControl start; sudo /usr/local/McAfee/AntiMalware/VSControl startoas
+  sudo /usr/local/McAfee/AntiMalware/VSControl start; sudo /usr/local/McAfee/AntiMalware/VSControl startoas }
+
+prettyjson_s() {
+    echo "$1" | python -m json.tool
 }
 
+prettyjson_linejson() {
+    cat "$1"| while read line; do prettyjson_s "$line"; done
+}
 # find shorthand
 function f() {
     find . -name "$1"

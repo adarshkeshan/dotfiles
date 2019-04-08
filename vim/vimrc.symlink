@@ -77,7 +77,6 @@ nnoremap gV `[v`]
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 nmap <F8> :TagbarToggle<CR>
-nmap <F9> <C-E>:sleep 3500m<CR>j<F9>
 nnoremap <c-p> :Files<CR>
 " nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 " make YCM compatible with UltiSnips (using supertab)
@@ -101,7 +100,7 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>et :exec ":vsp /Users/dblack/notes/vim/" . strftime('%m-%d-%y') . ".md"<CR>
+nnoremap <leader>tp :exec ":vsp /Users/akeshan/notes/vim/" . strftime('%m-%d-%y') . ".md"<CR>
 nnoremap <leader>ey :exec ":vsp ~/.config/yapf/style"<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
@@ -109,6 +108,7 @@ nnoremap <leader>l :call ToggleNumber()<CR>
 nnoremap <leader><Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <leader><Space> zf
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
+nnoremap <Leader>S :SyntasticCheck<CR><CR>
 nnoremap <silent> <leader>sp :set spell!<CR>
 nnoremap <leader>a :Ag 
 " nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
@@ -122,6 +122,7 @@ nnoremap <leader>Y :0,$!yapf<Cr><C-o>
 nnoremap <leader>8 :Rg!<cword><CR>
 nnoremap <leader>9 <Plug>PyImportCleanup
 nnoremap <Leader>JJ :%!python -m json.tool<CR>
+nnoremap <Leader>JL :%!prettyjson_linejson %<CR>
 nnoremap <silent> <leader>tn :TestNearest<CR>
 nnoremap <silent> <leader>tf :TestFile<CR>
 nnoremap <silent> <leader>ta :TestSuite<CR>
@@ -257,6 +258,7 @@ Plug 'tpope/vim-commentary' " comment stuff out
 Plug 'tpope/vim-unimpaired' " mappings which are simply short normal mode aliases for commonly used ex commands
 Plug 'tpope/vim-ragtag' " endings for html, xml, etc. - ehances surround
 Plug 'tpope/vim-surround' " mappings to easily delete, change and add such surroundings in pairs, such as quotes, parens, etc.
+Plug 'tpope/vim-projectionist' " mappings to easily delete, change and add such surroundings in pairs, such as quotes, parens, etc.
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
@@ -267,10 +269,14 @@ Plug 'SirVer/ultisnips'
 Plug 'Chiel92/vim-autoformat'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'terryma/vim-expand-region' 
+Plug 'tell-k/vim-autoflake' 
 
 Plug 'haya14busa/incsearch.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-obsession'
+
+" Go
+Plug 'fatih/vim-go'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
@@ -423,6 +429,25 @@ command! -bang -nargs=* Rg
 command! -bang -nargs=? -complete=dir Files
   \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 "}}}
+" file is large from 10mb
+
+let g:LargeFile = 1024 * 100
+augroup LargeFile 
+ autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+augroup END
+
+function LargeFile()
+ " no syntax highlighting etc
+ set eventignore+=FileType
+ " save memory when other file is viewed
+ setlocal bufhidden=unload
+ " is read-only (write with :w new_filename)
+ setlocal buftype=nowrite
+ " no undo possible
+ setlocal undolevels=-1
+ " display message
+ autocmd VimEnter *  echo "The file is larger than " . (g:LargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+endfunction
 
 " Custom Functions {{{
 function! ToggleNumber()

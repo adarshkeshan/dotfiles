@@ -33,14 +33,14 @@ bind l select-pane -R
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
 
-# Pane resizing panes with Prefix H,J,K,L
+# # Pane resizing panes with Prefix H,J,K,L
 bind -r H resize-pane -L 5
 bind -r J resize-pane -D 5
 bind -r K resize-pane -U 5
 bind -r L resize-pane -R 5
 
-# window options
-set-window-option -g main-pane-height 60
+# # window options
+# set-window-option -g main-pane-height 60
  
 set-option -g history-limit 3000
 
@@ -52,7 +52,7 @@ set -g mouse on
 # Set the default terminal mode to 256color mode
 set -g default-terminal "screen-256color"
 
-# set the status line's colors
+# # set the status line's colors
 set -g status-style fg=white,bg=black
 
 # set the color of the window list
@@ -105,7 +105,6 @@ bind-key -n M-y run-shell 'tmux save-buffer - | yank > #{pane_tty}'
 
 # transfer previously copied text (chosen from a menu) to attached terminal
 bind-key -n M-Y choose-buffer 'run-shell "tmux save-buffer -b \"%%%\" - | yank > #{pane_tty}"'
-
 
 
 

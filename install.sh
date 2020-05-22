@@ -1,3 +1,4 @@
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
@@ -8,6 +9,12 @@ brew install cmake
 brew install fzf
 brew install ripgrep
 brew install the_silver_searcher
+brew cask install iterm2
+brew install tmux
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+brew install zsh zsh-completions
+chsh -s /bin/zsh
+
 sudo pip install yapf
 sudo pip install pep8
 sudo pip install isort

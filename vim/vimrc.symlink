@@ -9,6 +9,12 @@ set backspace=indent,eol,start
 let g:vimwiki_list = [{'path': '~/.wiki/'}]
 set spelllang=en_us
 set iskeyword+=-
+" Copy {{{
+let g:netrw_browse_split=4
+let g:netrw_liststyle=3
+let g:netrw_winsize=20
+
+" }}}
 " }}}
 " Copy {{{
 vmap "+y :!xclip -f -sel clip
@@ -22,6 +28,7 @@ set clipboard=unnamed
 " nnoremap D "_D
 nnoremap c "_c
 nnoremap C "_C
+nnoremap <F2> va[<esc>%
 " vnoremap d "_d
 " vnoremap x "_x
 " vnoremap d "_d
@@ -77,12 +84,19 @@ nnoremap gV `[v`]
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 nmap <F8> :TagbarToggle<CR>
+" Execute current line or current selection as Vim EX commands.
+" map <F2> yyp!!sh<CR><Esc>
+xnoremap <F3> yPgv:!zsh<CR>
+" nnoremap <F2> :exe getline(".")<CR>
+" vnoremap <F2> :<C-w>exe join(getline("'<","'>"),'<Bar>')<CR>
+
 nnoremap <c-p> :Files<CR>
 " nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:SuperTabDefaultCompletionType = 'context'
+" let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -98,6 +112,7 @@ nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>h :A<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :qa!<CR>
 nnoremap <leader>wq :wq<CR>
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>tp :exec ":vsp /Users/akeshan/notes/vim/" . strftime('%m-%d-%y') . ".md"<CR>
@@ -108,7 +123,8 @@ nnoremap <leader>l :call ToggleNumber()<CR>
 nnoremap <leader><Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <leader><Space> zf
 nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
-nnoremap <Leader>S :SyntasticCheck<CR><CR>
+nnoremap <Leader>S :%s/\<<C-r><C-w>\>//g<Left><Left>
+" nnoremap <Leader>S :SyntasticCheck<CR><CR>
 nnoremap <silent> <leader>sp :set spell!<CR>
 nnoremap <leader>a :Ag 
 " nnoremap <leader>c :SyntasticCheck<CR>:Errors<CR>
@@ -129,6 +145,9 @@ nnoremap <silent> <leader>ta :TestSuite<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
 nnoremap <silent> <leader>tg :TestVisit<CR>
 nnoremap <silent> <leader>tk :!tmux detach -a<CR><CR>
+" Pytest
+nnoremap <silent><Leader>f <Esc>:Pytest function<CR>
+nnoremap <silent><Leader>FF <Esc>:Black <CR>
 " Prompt for a command to run
 map <Leader>vc :VimuxPromptCommand<CR>v
 " Run last command executed by VimuxRunCommand
@@ -206,6 +225,23 @@ map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 " }}}
 " AutoGroups {{{
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
@@ -233,11 +269,18 @@ set writebackup
 " }}}
 " Vim Plug {{{
 call plug#begin('~/.vim/plugged')
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
 " colorschemes
 Plug 'joshdick/onedark.vim'
 Plug 'tmhedberg/SimpylFold'
 Plug 'Konfekt/FastFold'
 Plug 'tommcdo/vim-fubitive'
+
+" unite
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'Shougo/denite.nvim'
 
 Plug 'scrooloose/syntastic', { 'for': ['php', 'python', 'javascript', 'css'] }
 Plug 'fisadev/vim-isort'
@@ -245,6 +288,17 @@ Plug 'majutsushi/tagbar'
 Plug 'davidhalter/jedi-vim'
 " utilities
 Plug 'kana/vim-fakeclip'
+" utilities
+Plug 'starcraftman/vim-eclim'
+
+
+" markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+" REname
+Plug 'qpkorr/vim-renamer'
+
 
 Plug 'ryanoasis/vim-devicons' " file drawer
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -262,11 +316,13 @@ Plug 'tpope/vim-projectionist' " mappings to easily delete, change and add such 
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
+Plug 'tommcdo/vim-fubitive' " amazing git wrapper for vim
 Plug 'tpope/vim-rhubarb' " amazing git wrapper for vim
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
 " Track the engine.
 Plug 'SirVer/ultisnips'
 Plug 'Chiel92/vim-autoformat'
+Plug 'ambv/black'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'terryma/vim-expand-region' 
 Plug 'tell-k/vim-autoflake' 
@@ -277,12 +333,15 @@ Plug 'tpope/vim-obsession'
 
 " Go
 Plug 'fatih/vim-go'
+Plug 'farazdagi/vim-go-ide'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 Plug 'vim-scripts/python_import.vim'
 
 Plug 'janko-m/vim-test'
+Plug 'alfredodeza/pytest.vim'
+'
 Plug 'benmills/vimux'
 
 Plug 'editorconfig/editorconfig-vim' " .editorconfig support
@@ -331,6 +390,21 @@ let g:airline_powerline_fonts = 1
 
 " Testing {{{
 " Vim test Options
+"
+
+" Search for current word and replace with given text for files in arglist.
+function! Replace(bang, replace)
+  let flag = 'ge'
+  if !a:bang
+    let flag .= 'c'
+  endif
+  let search = '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+  let replace = escape(a:replace, '/\&~')
+  execute 'argdo %s/' . search . '/' . replace . '/' . flag
+endfunction
+command! -nargs=1 -bang Replace :call Replace(<bang>0, <q-args>)
+
+nnoremap <Leader>R :call Replace(0, input('Replace '.expand('<cword>').' with: '))<CR>
 
 " strips trailing whitespace at the end of files. this
 " is called on buffer write in the autogroup above.
@@ -368,8 +442,11 @@ let g:test#preserve_screen = 1
 
 " }}}
 
+" ECLIM{{{
+let g:EclimCompletionMethod = 'omnifunc'
+" }}}
 " NERDTREE{{{
-let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__','venv']
+let NERDTreeIgnore = ['\.pyc$', '\.egg-info$', '__pycache__', '__pycache__', 'venv']
 let g:NERDTreeNodeDelimiter = "\u00a0"
 " }}}
 "
@@ -377,6 +454,7 @@ let g:NERDTreeNodeDelimiter = "\u00a0"
 " Fugitive{{{
 " Fugitive's Gbrowse to clipboard (using poweryank)
 command! -range GBYank exe "Gbrowse!" | call poweryank#osc52(@*)
+let g:fugitive_bitbucket_domains = ['bitbucket.oci.oraclecorp.com', 'git@bitbucket.oci.oraclecorp.com', 'git@bitbucket.oci.oraclecorp.com:7999']
 " }}}
 " python{{{
 "
@@ -442,7 +520,7 @@ function LargeFile()
  " save memory when other file is viewed
  setlocal bufhidden=unload
  " is read-only (write with :w new_filename)
- setlocal buftype=nowrite
+ " setlocal buftype=nowrite
  " no undo possible
  setlocal undolevels=-1
  " display message
@@ -482,6 +560,13 @@ function! <SID>CleanFile()
     call cursor(l, c)
 endfunction
 
+let g:S = 0  "result in global variable S
+function! Sum(number)
+  let g:S = g:S + a:number
+  return a:number
+endfunction
+
+
 " vp doesn't replace paste buffer
 function! RestoreRegister()
   let @" = s:restore_reg
@@ -503,6 +588,6 @@ endif
 
 " }}}
 "
-colorscheme onedark
 
+colorscheme onedark
 "vim:foldmethod=marker:foldlevel=0

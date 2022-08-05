@@ -73,7 +73,8 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-plugins=(z osx tmux pip tmuxinator git jsontools  zsh-autosuggestions)
+plugins=(z tmux pip tmuxinator git jsontools  zsh-autosuggestions)
+# plugins=(z osx tmux pip tmuxinator git jsontools  zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -119,9 +120,9 @@ export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
+source ~/.profile
 source ~/.alias
-source ~/.hearsay 
-source ~/.oracle.sh
+source ~/.job.sh
 source ~/.functions.sh 
 
 # Remove dupliate history
@@ -182,5 +183,12 @@ export FZF_DEFAULT_COMMAND='rg --files --ignore --hidden --follow --glob "!.git/
 export ECLIPSE_HOME="/Applications/Eclipse.app"
 export ECLIPSE_ECLIM="$ECLIPSE_HOME/Contents/Eclipse/eclimd"
 
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
+
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+export PATH=$PATH:/Users/adkeshan/.toolbox/bin

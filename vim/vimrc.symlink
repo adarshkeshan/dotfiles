@@ -13,6 +13,7 @@ set iskeyword+=-
 let g:netrw_browse_split=4
 let g:netrw_liststyle=3
 let g:netrw_winsize=20
+set dictionary+=/usr/share/dict/words
 
 " }}}
 " }}}
@@ -74,6 +75,12 @@ set foldlevelstart=10   " start with fold level of 1
 nnoremap j gj
 nnoremap k gk
 nnoremap gV `[v`]
+" }}}
+" MAC VIM  {{{
+if has("gui_macvim")
+set guifont=Menlo\ Regular:h25
+    
+endif
 " }}}
 " Misc {{{
 " Can be typed even faster than jj.
@@ -275,7 +282,8 @@ Plug 'xolox/vim-notes'
 Plug 'joshdick/onedark.vim'
 Plug 'tmhedberg/SimpylFold'
 Plug 'Konfekt/FastFold'
-Plug 'tommcdo/vim-fubitive'
+
+Plug 'xavierchow/vim-swagger-preview'
 
 " unite
 Plug 'roxma/nvim-yarp'
@@ -316,7 +324,7 @@ Plug 'tpope/vim-projectionist' " mappings to easily delete, change and add such 
 Plug 'vim-airline/vim-airline' " fancy statusline
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'tpope/vim-fugitive' " amazing git wrapper for vim
-Plug 'tommcdo/vim-fubitive' " amazing git wrapper for vim
+" Plug 'tommcdo/vim-fubitive' " amazing git wrapper for vim
 Plug 'tpope/vim-rhubarb' " amazing git wrapper for vim
 Plug 'tpope/vim-repeat' " enables repeating other supported plugins with the . command
 " Track the engine.
@@ -354,6 +362,7 @@ Plug 'AndrewRadev/splitjoin.vim' " single/multi line code handler: gS - split on
 Plug 'vim-scripts/matchit.zip' " extended % matching
 Plug 'tpope/vim-sleuth' " detect indent style (tabs vs. spaces)
 Plug 'sickill/vim-pasta' " context-aware pasting
+Plug 'vim-scripts/AutoComplPop'
 
 " styles
 Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] } " markdown support
@@ -453,8 +462,7 @@ let g:NERDTreeNodeDelimiter = "\u00a0"
 
 " Fugitive{{{
 " Fugitive's Gbrowse to clipboard (using poweryank)
-command! -range GBYank exe "Gbrowse!" | call poweryank#osc52(@*)
-let g:fugitive_bitbucket_domains = ['bitbucket.oci.oraclecorp.com', 'git@bitbucket.oci.oraclecorp.com', 'git@bitbucket.oci.oraclecorp.com:7999']
+" command! -range GBYank exe "Gbrowse!" | call poweryank#osc52(@*)
 " }}}
 " python{{{
 "

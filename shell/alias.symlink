@@ -1,8 +1,8 @@
 alias c='clear'
 alias claer='clear'
 alias clera='clear'
-# alias vim=/usr/local/Cellar/vim/8.1.0700/bin/vim
-# alias vi=/usr/local/Cellar/vim/8.1.0700/bin/vim
+alias vim=/usr/local/Cellar/vim/9.0.0000/bin/vim
+alias vi=/usr/local/Cellar/vim/9.0.0000/bin/vim
 #alias vi='vi'
 
 

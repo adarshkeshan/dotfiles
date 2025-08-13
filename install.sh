@@ -1,27 +1,41 @@
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-vim +PlugInstall
+#!/bin/bash
 
-brew install cmake
-brew install fzf
-brew install ripgrep
-brew install the_silver_searcher
-brew cask install iterm2
-brew install tmux
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-brew install zsh zsh-completions
-chsh -s /bin/zsh
+# This script is run by GitHub Codespaces when a new codespace is created.
 
-sudo pip install yapf
-sudo pip install pep8
-sudo pip install isort
-gem install coderay
-gem install tmuxinator
-sudo apt-get install pylint
-sudo apt-get install cmake
-apt-get install silversearcher-ag
+echo "🚀 Starting personal dotfiles setup..."
 
+# ---
+# Install essential dependencies if they are not present
+# ---
+echo "📦 Installing dependencies (build-essential, ripgrep, etc.)..."
+sudo apt-get update
+sudo apt-get install -y curl build-essential ripgrep fd-find
 
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# ---
+# Install the latest stable Neovim
+# We check if it's already installed to make the script idempotent (runnable multiple times)
+# ---
+if ! command -v nvim &> /dev/null
+then
+    echo "Installing latest Neovim..."
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    chmod u+x nvim.appimage
+    # We install it to a user-local directory
+    mkdir -p ~/.local/bin
+    mv nvim.appimage ~/.local/bin/nvim
+else
+    echo "✅ Neovim is already installed."
+fi
+
+# ---
+# Install LazyVim configuration
+# We check if the directory already exists
+# ---
+if [ ! -d ~/.config/nvim ]; then
+    echo "⚙️ Cloning LazyVim starter configuration..."
+    git clone https://github.com/LazyVim/starter ~/.config/nvim
+else
+    echo "✅ LazyVim configuration already exists."
+fi
+
+echo "🎉 Dotfiles setup complete!"
